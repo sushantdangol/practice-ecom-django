@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}
+{% if category %}{{ category.name }} {% else %} Products {% endif %}
+{% endblock %}
+
+{% block content %}
+<style rel='stylesheet'>
+  a {
+    color: orange;
+  }
+
+  a:hover {
+    color: red;
+  }
+</style>
+<div class="container-fluid">
+  <div class="row" style="margin-top: 6%">
+
+    <div class="col-sm-8 blog-main">
+
+      <div class="blog-po st">
+        <div class="row">
+          {% for product in products %}
+          <div class="col-md-4" style="">
+            <div class="thumbnail">
+              <img
+                src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}"
+                alt="{{ product.name }}" style="height: 130px; width: auto; position: relative; left: 12px;">
+              <div class="card-body">
+                <h5 class="card-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h5>
+                <p>Rs. {{ product.price }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h4>Categories</h4>
+      <ol class="list-unstyled">
+        <li {% if not category %} class="active" {% endif %}><a href="{% url 'core:product_list' %}">All</a></li>
+        {% for c in categories %}
+
+        <li {% if category.slug == c.slug %} class="active" {% endif %}>
+          <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <!-- Pagination -->
+  
+
+</div>
+{% endblock %}
